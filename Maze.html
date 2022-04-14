@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze</title>
+    <script src="Maze.js"> </script>
+    <style>
+        #canvas1{
+            border: 2px solid black;
+        }
+        .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <a href="batu_presiden.html" class="button">Back to menu</a>
+    <p style="font-size:20px;">Zoom out to see the whole maze!!</p> 
+    <canvas id="canvas1" width="870" height="860"> 
+        
+    <script>
+
+        var canvasKita = document.querySelector("#canvas1");
+        var ctx = canvasKita.getContext("2d"); 
+        var imageDataSaya = ctx.getImageData(0,0,canvasKita.width, canvasKita.height);
+        ctx.putImageData(imageDataSaya, 0,0);
+        var rightPressed = false;
+        var leftPressed = false;
+        var downPressed = false;
+        var upPressed = false;  
+        var x = 10
+        var y = 10
+         
+        garis();
+
+        var posisi={x:12, y:12};
+        var arah;
+        //1 = KANAN
+        //3 = KIRI
+        //2 = BAWAH
+        //0 = ATAS
+
+        kotak(imageDataSaya, posisi, {r:255, g:150, b:120, a:255})
+
+        window.addEventListener('keydown', function clickListner(ev){
+            if(ev.key=='ArrowRight'){
+                check();
+                ctx.clearRect(0,0,canvasKita.width,canvasKita.height);
+                imageDataSaya = ctx.getImageData(0,0,canvasKita.width, canvasKita.height);
+                garis();
+                arah=1;
+                console.log(arah);
+                console.log(posisi);
+                kotak(imageDataSaya, posisi, {r:255, g:150, b:120, a:255})
+                ctx.putImageData(imageDataSaya, 0, 0);          
+            }
+            if(ev.key=='ArrowLeft'){
+                arah=3;
+                check();
+                ctx.clearRect(0,0,canvasKita.width,canvasKita.height);
+                imageDataSaya = ctx.getImageData(0,0,canvasKita.width, canvasKita.height);
+                garis();
+                console.log(arah);
+                console.log(posisi);
+                kotak(imageDataSaya, posisi, {r:255, g:150, b:120, a:255})
+                ctx.putImageData(imageDataSaya, 0, 0);           
+            }
+            if(ev.key=='ArrowUp'){
+                arah=0;
+                check();
+                ctx.clearRect(0,0,canvasKita.width,canvasKita.height);
+                imageDataSaya = ctx.getImageData(0,0,canvasKita.width, canvasKita.height);
+                garis();
+                console.log(arah);
+                console.log(posisi);
+                kotak(imageDataSaya, posisi, {r:255, g:150, b:120, a:255})
+                ctx.putImageData(imageDataSaya, 0, 0);
+                
+            }
+            if(ev.key=='ArrowDown'){
+                arah=2;
+                check();
+                ctx.clearRect(0,0,canvasKita.width,canvasKita.height);
+                imageDataSaya = ctx.getImageData(0,0,canvasKita.width, canvasKita.height);
+                garis();
+                console.log(arah);
+                console.log(posisi);
+                kotak(imageDataSaya, posisi, {r:255, g:150, b:120, a:255})
+                ctx.putImageData(imageDataSaya, 0, 0);
+                
+            }
+        })
+
+        canvasKita.addEventListener('click', function clickListner(ev){
+            console.log(ev);
+        }) 
+
+        function check(){
+            if (arah==1){
+                var indexNow = 4*((posisi.x+33)+((posisi.y+32)*canvasKita.width));
+                console.log('pp',posisi.x+48,'',posisi.y+48);
+                var r1 = imageDataSaya.data[indexNow];
+                var g1 = imageDataSaya.data[indexNow+1];
+                var b1 = imageDataSaya.data[indexNow+2];
+                var indexNow = 4*((posisi.x+33)+((posisi.y+2)*canvasKita.width));
+                var r2 = imageDataSaya.data[indexNow];
+                var g2 = imageDataSaya.data[indexNow+1];
+                var b2 = imageDataSaya.data[indexNow+2];
+                console.log('R1',r2,'',r1);
+                if((r1==99)&&(g1==99)&&(b1==99)){
+                    // posisi.x+=0;
+                }
+                else if((r2==99)&&(g2==99)&&(b2==99)){
+                    // posisi.x+=0;
+                }
+                else{
+                    posisi.x+=5;
+                }
+            }
+            else if (arah==2){
+                var indexNow = 4*((posisi.x+32)+((posisi.y+34)*canvasKita.width));
+                console.log('pp',posisi.x+38,'',posisi.y+38);
+                var r1 = imageDataSaya.data[indexNow];
+                var g1 = imageDataSaya.data[indexNow+1];
+                var b1 = imageDataSaya.data[indexNow+2];
+                var indexNow = 4*((posisi.x)+((posisi.y+34)*canvasKita.width));
+                var r2 = imageDataSaya.data[indexNow];
+                var g2 = imageDataSaya.data[indexNow+1];
+                var b2 = imageDataSaya.data[indexNow+2];
+                console.log('RR',r2,' ',r1);
+                if((r1==99)&&(g1==99)&&(b1==99)){
+                    posisi.x+=0;
+                }
+                else if((r2==99)&&(g2==99)&&(b2==99)){
+                    posisi.x+=0;
+                }
+                else if(posisi.y > canvasKita.height){
+                    alert("You WIN");
+                    document.location.reload();
+                    
+
+                }
+                else{
+                    posisi.y+=5;
+                }
+            }
+
+            else if (arah==0){
+                var indexNow = 4*((posisi.x)+((posisi.y-1)*canvasKita.width));
+                console.log('pp',posisi.x+38,'',posisi.y+38);
+                var r1 = imageDataSaya.data[indexNow];
+                var g1 = imageDataSaya.data[indexNow+1];
+                var b1 = imageDataSaya.data[indexNow+2];
+                var indexNow = 4*((posisi.x+32)+((posisi.y-1)*canvasKita.width));
+                var r2 = imageDataSaya.data[indexNow];
+                var g2 = imageDataSaya.data[indexNow+1];
+                var b2 = imageDataSaya.data[indexNow+2];
+                console.log('RR',r2,' ',r1);
+                if((r1==99)&&(g1==99)&&(b1==99)){
+                    posisi.x+=0;
+                }
+                else if((r2==99)&&(g2==99)&&(b2==99)){
+                    posisi.x+=0;
+                }
+                else{
+                    posisi.y-=5;
+                }
+            }
+
+            else if (arah==3){
+                var indexNow = 4*((posisi.x-1)+((posisi.y)*canvasKita.width));
+                console.log('pp',posisi.x+38,'',posisi.y+38);
+                var r1 = imageDataSaya.data[indexNow];
+                var g1 = imageDataSaya.data[indexNow+1];
+                var b1 = imageDataSaya.data[indexNow+2];
+                var indexNow = 4*((posisi.x-1)+((posisi.y+32)*canvasKita.width));
+                var r2 = imageDataSaya.data[indexNow];
+                var g2 = imageDataSaya.data[indexNow+1];
+                var b2 = imageDataSaya.data[indexNow+2];
+                console.log('RR',r2,' ',r1);
+                if((r1==99)&&(g1==99)&&(b1==99)){
+                    posisi.x+=0;
+                }
+                else if((r2==99)&&(g2==99)&&(b2==99)){
+                    posisi.x+=0;
+                }
+                else{
+                    posisi.x-=5;
+                }
+            }
+        }
+        ctx.putImageData(imageDataSaya, 0, 0);
+ 
+    </script>
+    </canvas>
+    
+</body>
+</html>
